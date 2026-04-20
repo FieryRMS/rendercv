@@ -116,8 +116,18 @@ class TestMakeKeywordsBold:
     def test_keyword_inside_bold_is_never_double_bolded(self, keyword: str) -> None:
         text = f"before **{keyword}** after"
         result = make_keywords_bold(text, [keyword])
-        assert f"**{keyword}**" in result  # original bold preserved
-        assert "****" not in result  # no double-bold wrapping
+        assert result == text
+
+    @settings(deadline=None)
+    @given(
+        keyword=st.text(min_size=1, max_size=20).filter(
+            lambda s: s.strip() and "\n" not in s and "**" not in s
+        ),
+    )
+    def test_keyword_inside_bold_range_is_not_bolded(self, keyword: str) -> None:
+        text = f"before **before {keyword} after** after"
+        result = make_keywords_bold(text, [keyword])
+        assert result == text
 
     @settings(deadline=None)
     @given(
