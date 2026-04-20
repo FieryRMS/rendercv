@@ -113,6 +113,7 @@ def make_keywords_bold(string: str, keywords: list[str]) -> str:
         g2 = m1.group(2) or ""
         g3 = pattern.sub(lambda m2: f"**{m2.group(0)}**", m1.group(3) or "")
         return g1 + g2 + g3
+
     return unbold_pattern.sub(handle_unbold_match, string)
 
 
